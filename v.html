@@ -8,6 +8,7 @@
     <div id="content" class="ql-editor"></div>
   <script>
     const urlParams = new URLSearchParams(window.location.search);
+    console.log(urlParams.get('c'));
     document.getElementById('content').innerHTML = atob(urlParams.get('c'));
   </script>
   </body>
