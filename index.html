@@ -20,7 +20,7 @@
     });
     quill.on('text-change', (delta, oldDelta, source) => {
       var html = quill.root.innerHTML;
-      var url = "https://evandotpro.github.io/qrthingy/v.html?c=" + btoa(html);
+      var url = "https://evandotpro.github.io/qrthingy/v.html?c=" + encodeURIComponent(btoa(html));
       console.log(html);
       console.log(url);
       code.clear();
