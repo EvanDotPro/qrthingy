@@ -19,7 +19,7 @@
       theme: 'snow'
     });
     quill.on('text-change', (delta, oldDelta, source) => {
-      var html = quill.getSemanticHTML(0);
+      var html = quill.root.innerHTML;
       code.clear();
       code.makeCode("https://evandotpro.github.io/qrthingy/v.html?c=" + btoa(html));
     });
