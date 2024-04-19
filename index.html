@@ -20,6 +20,7 @@
     });
     quill.on('text-change', (delta, oldDelta, source) => {
       var html = quill.root.innerHTML;
+      console.log(html);
       code.clear();
       code.makeCode("https://evandotpro.github.io/qrthingy/v.html?c=" + btoa(html));
     });
