@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <title>Make a rich text QR code</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.0/dist/quill.snow.css" rel="stylesheet" />
+    <style>
+      body,html { font-family: sans-serif; }
+      #editor { height: 60%; }
+    </style>
+  </head>
+  <body>
+  <h3>Easy Rich Text QR Generator by Evan</h3>
+  <div id="editor"></div>
+  <div id="qrcode"></div>
+  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.0/dist/quill.js"></script>
+  <script>
+    var code = new QRCode(document.getElementById("qrcode"), "n/a");
+    const quill = new Quill('#editor', {
+      theme: 'snow'
+    });
+    quill.on('text-change', (delta, oldDelta, source) => {
+      var html = quill.getSemanticHTML(0);
+      code.clear();
+      code.makeCode("https://evandotpro.github.io/qrthingy/v.html?c=" + btoa(html));
+    });
+  </script>
+  </body>
+</html>
