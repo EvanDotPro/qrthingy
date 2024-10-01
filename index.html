@@ -8,7 +8,7 @@
     <style>
       body,html { font-family: sans-serif; }
       #editor { height: 60%; }
-      #html, #toggle-visual {
+      #html, #toggle-visual, #qrcode {
         display: none;
       }
       #html {
@@ -23,20 +23,52 @@
   <button id="toggle-visual">Visual Mode</button>
   <div id="editor"></div>
   <textarea id="html">Write HTML Here</textarea>
+  <img id="padded-qr" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==">
   <div id="qrcode"></div>
   <script src="https://cdn.jsdelivr.net/npm/quill@2.0.0/dist/quill.js"></script>
   <script>
+  function canvasToDataURLWithPadding(canvas, paddingWidth, paddingColor) {
+    // Create a new canvas with the padding
+    const paddedCanvas = document.createElement('canvas');
+    const paddedContext = paddedCanvas.getContext('2d');
+
+    // Calculate dimensions of the padded canvas
+    const paddedWidth = canvas.width + (paddingWidth * 2);
+    const paddedHeight = canvas.height + (paddingWidth * 2);
+
+    // Set the dimensions of the padded canvas
+    paddedCanvas.width = paddedWidth;
+    paddedCanvas.height = paddedHeight;
+
+    // Fill the padded canvas with the padding color
+    paddedContext.fillStyle = paddingColor;
+    paddedContext.fillRect(0, 0, paddedWidth, paddedHeight);
+
+    // Draw the original canvas onto the padded canvas
+    paddedContext.drawImage(canvas, paddingWidth, paddingWidth);
+
+    // Return the data URL of the padded canvas
+    return paddedCanvas.toDataURL("image/png");
+  }
+
+  function generateQrCode(str) {
+    code.clear();
+    code.makeCode(str);
+    var newPng = canvasToDataURLWithPadding($('#qrcode > canvas')[0], 10, '#FFFFFF');
+    $('#padded-qr').attr('src', newPng);
+  }
+
     function htmlToUrl(html) {
       return "https://evandotpro.github.io/qrthingy/v.html?c=" + encodeURIComponent(btoa(unescape(encodeURIComponent(html))));
     }
     var code = new QRCode(document.getElementById("qrcode"), "n/a");
+    generateQrCode('n/a');
     const quill = new Quill('#editor', {
       theme: 'snow'
     });
     quill.on('text-change', (delta, oldDelta, source) => {
       var html = quill.root.innerHTML;
-      code.clear();
-      code.makeCode(htmlToUrl(html));
+      generateQrCode(html);
     });
     $('#toggle-html').on('click', function() {
       $(this).hide();
@@ -53,8 +85,7 @@
       $('.ql-toolbar').show();
     });
     $('#html').on('keyup', function() {
-      code.clear();
-      code.makeCode(htmlToUrl($('#html').val()));
+      generateQrCode($('#html').val());
     });
   </script>
   </body>
