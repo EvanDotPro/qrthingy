@@ -56,7 +56,7 @@
     var codeUrl = htmlToUrl(str);
     code.makeCode(codeUrl);
     var newPng = canvasToDataURLWithPadding($('#qrcode > canvas')[0], 10, '#FFFFFF');
-    $('#qr-link').attr('herf', codeUrl);
+    $('#qr-link').attr('href', codeUrl);
     $('#padded-qr').attr('src', newPng);
   }
 
