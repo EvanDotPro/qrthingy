@@ -53,7 +53,7 @@
 
   function generateQrCode(str) {
     code.clear();
-    code.makeCode(str);
+    code.makeCode(htmlToUrl(str));
     var newPng = canvasToDataURLWithPadding($('#qrcode > canvas')[0], 10, '#FFFFFF');
     $('#padded-qr').attr('src', newPng);
   }
