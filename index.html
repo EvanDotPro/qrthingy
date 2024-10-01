@@ -3,29 +3,58 @@
     <title>Make a rich text QR code</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script type="text/javascript" src="https://cdn.rawgit.com/KeeeX/qrcodejs/master/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.0/dist/quill.snow.css" rel="stylesheet" />
     <style>
       body,html { font-family: sans-serif; }
       #editor { height: 60%; }
+      #html, #toggle-visual {
+        display: none;
+      }
+      #html {
+        height: 60%;
+        width: 100%;
+      }
     </style>
   </head>
   <body>
   <h3>Easy Rich Text QR Generator by Evan</h3>
+  <button id="toggle-html">HTML Mode</button>
+  <button id="toggle-visual">Visual Mode</button>
   <div id="editor"></div>
+  <textarea id="html">Write HTML Here</textarea>
   <div id="qrcode"></div>
   <script src="https://cdn.jsdelivr.net/npm/quill@2.0.0/dist/quill.js"></script>
   <script>
+    function htmlToUrl(html) {
+      return "https://evandotpro.github.io/qrthingy/v.html?c=" + encodeURIComponent(btoa(unescape(encodeURIComponent(html))));
+    }
     var code = new QRCode(document.getElementById("qrcode"), "n/a");
     const quill = new Quill('#editor', {
       theme: 'snow'
     });
     quill.on('text-change', (delta, oldDelta, source) => {
       var html = quill.root.innerHTML;
-      var url = "https://evandotpro.github.io/qrthingy/v.html?c=" + encodeURIComponent(btoa(html));
-      console.log(html);
-      console.log(url);
       code.clear();
-      code.makeCode(url);
+      code.makeCode(htmlToUrl(html));
+    });
+    $('#toggle-html').on('click', function() {
+      $(this).hide();
+      $('#toggle-visual').show();
+      $('#editor').hide();
+      $('#html').show();
+      $('.ql-toolbar').hide();
+    });
+    $('#toggle-visual').on('click', function() {
+      $(this).hide();
+      $('#toggle-html').show();
+      $('#editor').show();
+      $('#html').hide();
+      $('.ql-toolbar').show();
+    });
+    $('#html').on('keyup', function() {
+      code.clear();
+      code.makeCode(htmlToUrl($('#html').val()));
     });
   </script>
   </body>
