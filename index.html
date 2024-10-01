@@ -23,7 +23,7 @@
   <button id="toggle-visual">Visual Mode</button>
   <div id="editor"></div>
   <textarea id="html">Write HTML Here</textarea>
-  <img id="padded-qr" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==">
+  <a href="#" target="_blank" id="qr-link"><img id="padded-qr" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=="></a>
   <div id="qrcode"></div>
   <script src="https://cdn.jsdelivr.net/npm/quill@2.0.0/dist/quill.js"></script>
   <script>
@@ -53,8 +53,10 @@
 
   function generateQrCode(str) {
     code.clear();
-    code.makeCode(htmlToUrl(str));
+    var codeUrl = htmlToUrl(str);
+    code.makeCode(codeUrl);
     var newPng = canvasToDataURLWithPadding($('#qrcode > canvas')[0], 10, '#FFFFFF');
+    $('#qr-link').attr('herf', codeUrl);
     $('#padded-qr').attr('src', newPng);
   }
 
