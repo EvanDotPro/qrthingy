@@ -17,9 +17,7 @@
     console.log(urlParams.get('c'));
     document.getElementById('content').innerHTML = decodeURIComponent(escape(atob(decodeURIComponent(urlParams.get('c')))));
     renderMathInElement(document.getElementById('content'));
-    document.getElementById('content').innerHTML =
-      marked.parse(document.getElementById('content').innerHTML)
-    );
+    document.getElementById('content').innerHTML = marked.parse(document.getElementById('content').innerHTML);
   </script>
   </body>
 </html>
